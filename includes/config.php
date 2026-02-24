@@ -8,7 +8,7 @@ define('SITE_URL', 'http://localhost/faydev/control-panel');
 define('UPLOAD_PATH', __DIR__ . '/uploads/');
 define('UPLOAD_URL', SITE_URL . '/uploads/');
 define('BACKUP_PATH', __DIR__ . '/backup/');
-define('JSON_PATH', __DIR__ . '/');
+define('JSON_PATH', __DIR__ . '/data/');
 
 function getDB() {
     global $pdo;

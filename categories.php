@@ -13,7 +13,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
         if (empty($name)) {
             $error = 'Name is required';
         } else {
-            $pdo = getDB();
             $stmt = $pdo->prepare("INSERT INTO categories (name, slug) VALUES (?, ?)");
             $stmt->execute([$name, $slug]);
             logActivity('create_category', "Created category: $name");
@@ -23,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     } elseif ($_POST['action'] === 'delete') {
         $id = (int)($_POST['id'] ?? 0);
         if ($id) {
-            $pdo = getDB();
             $stmt = $pdo->prepare("SELECT name FROM categories WHERE id = ?");
             $stmt->execute([$id]);
             $cat = $stmt->fetch();
@@ -37,7 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
     }
 }
 
-$pdo = getDB();
 $categories = $pdo->query("
     SELECT c.*, COUNT(pc.project_id) as project_count 
     FROM categories c 

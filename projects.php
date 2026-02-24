@@ -13,8 +13,6 @@ $category = $_GET['category'] ?? '';
 $page = (int)($_GET['page'] ?? 1);
 $perPage = 10;
 
-$pdo = getDB();
-
 $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
 
 $where = [];

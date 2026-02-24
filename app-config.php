@@ -5,8 +5,6 @@ requireLogin();
 
 $pageTitle = 'App Configuration';
 
-$pdo = getDB();
-
 $allProjects = $pdo->query("
     SELECT p.id, p.name, p.slug, p.status 
     FROM projects p 
@@ -43,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function generateAppConfigJson() {
-    $pdo = getDB();
+    global $pdo;
     $stmt = $pdo->query("
         SELECT p.slug 
         FROM app_config ac 

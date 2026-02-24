@@ -7,8 +7,6 @@ $pageTitle = 'Dashboard';
 
 require_once __DIR__ . '/includes/header.php';
 
-$pdo = getDB();
-
 $totalProjects = $pdo->query("SELECT COUNT(*) FROM projects WHERE deleted_at IS NULL")->fetchColumn();
 $totalCategories = $pdo->query("SELECT COUNT(*) FROM categories")->fetchColumn();
 $appConfigCount = $pdo->query("SELECT COUNT(*) FROM app_config")->fetchColumn();

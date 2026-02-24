@@ -14,8 +14,6 @@ if (!$id) {
 }
 
 try {
-    $pdo = getDB();
-    
     $stmt = $pdo->prepare("SELECT name, preview_image FROM projects WHERE id = ?");
     $stmt->execute([$id]);
     $project = $stmt->fetch();
@@ -50,7 +48,7 @@ try {
 }
 
 function generateProjectsJson() {
-    $pdo = getDB();
+    global $pdo;
     $stmt = $pdo->query("
         SELECT p.*, GROUP_CONCAT(c.name) as categories 
         FROM projects p 

@@ -17,7 +17,6 @@ $project = [
     'status' => 'Draft'
 ];
 
-$pdo = getDB();
 $categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
 
 if (isset($_GET['id'])) {
@@ -133,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 function generateProjectsJson() {
-    $pdo = getDB();
+    global $pdo;
     $stmt = $pdo->query("
         SELECT p.*, GROUP_CONCAT(c.name) as categories 
         FROM projects p 

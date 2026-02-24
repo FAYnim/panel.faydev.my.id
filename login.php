@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($email) || empty($password)) {
         $error = 'Email and password are required';
     } else {
-        $pdo = getDB();
         $stmt = $pdo->prepare('SELECT * FROM admins WHERE email = ?');
         $stmt->execute([$email]);
         $admin = $stmt->fetch();

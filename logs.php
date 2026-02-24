@@ -8,8 +8,6 @@ $pageTitle = 'Activity Logs';
 $page = (int)($_GET['page'] ?? 1);
 $perPage = 20;
 
-$pdo = getDB();
-
 $totalLogs = $pdo->query("SELECT COUNT(*) FROM activity_logs")->fetchColumn();
 $totalPages = ceil($totalLogs / $perPage);
 $offset = ($page - 1) * $perPage;

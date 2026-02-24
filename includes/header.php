@@ -15,6 +15,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         .sidebar { min-height: 100vh; background: #343a40; }
         .sidebar a { color: #adb5bd; text-decoration: none; padding: 12px 20px; display: block; border-left: 3px solid transparent; }
         .sidebar a:hover, .sidebar a.active { background: #2d3338; color: #fff; border-left-color: #0d6efd; }
+		#btn-logout { border-left: 1px solid #f8f9fa; }
         .main-content { min-height: 100vh; }
         .card { border: none; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); }
         .table th { font-weight: 600; background: #f8f9fa; }
@@ -29,11 +30,9 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         <div class="row">
             <nav class="col-md-3 col-lg-2 d-md-block sidebar collapse show">
                 <div class="position-sticky pt-3">
-                    <div class="px-3 mb-3 text-white">
-                        <h5><i class="fas fa-code me-2"></i>Faydev</h5>
-                        <small class="text-muted">Control Panel</small>
+                    <div class="px-3 mt-1 text-white">
+                        <h3><i class="fas fa-code me-2"></i>Faydev</h3>
                     </div>
-                    <hr>
                     <ul class="nav flex-column">
                         <li class="nav-item">
                             <a href="index.php" class="<?= $currentPage == 'index' ? 'active' : '' ?>">
@@ -68,7 +67,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                     </ul>
                     <hr>
                     <div class="px-3">
-                        <a href="logout.php" class="btn btn-outline-light btn-sm w-100">
+                        <a href="logout.php" id="btn-logout" class="btn btn-outline-light btn-sm w-100">
                             <i class="fas fa-sign-out-alt me-1"></i> Logout
                         </a>
                     </div>

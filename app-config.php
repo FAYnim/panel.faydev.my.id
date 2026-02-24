@@ -64,12 +64,6 @@ function generateAppConfigJson() {
     logActivity('update_app_config', 'Updated app config');
 }
 
-function logActivity($action, $description) {
-    $pdo = getDB();
-    $stmt = $pdo->prepare('INSERT INTO activity_logs (action, description) VALUES (?, ?)');
-    $stmt->execute([$action, $description]);
-}
-
 require_once __DIR__ . '/includes/header.php';
 ?>
 

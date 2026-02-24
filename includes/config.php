@@ -59,3 +59,9 @@ function jsonResponse($success, $message, $data = null) {
     ]);
     exit;
 }
+
+function logActivity($action, $description) {
+    $pdo = getDB();
+    $stmt = $pdo->prepare('INSERT INTO activity_logs (action, description) VALUES (?, ?)');
+    $stmt->execute([$action, $description]);
+}

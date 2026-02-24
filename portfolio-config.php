@@ -64,12 +64,6 @@ function generatePortfolioConfigJson() {
     logActivity('update_portfolio_config', 'Updated portfolio config');
 }
 
-function logActivity($action, $description) {
-    $pdo = getDB();
-    $stmt = $pdo->prepare('INSERT INTO activity_logs (action, description) VALUES (?, ?)');
-    $stmt->execute([$action, $description]);
-}
-
 require_once __DIR__ . '/includes/header.php';
 ?>
 

@@ -26,5 +26,19 @@
         "categories": [
             "Personal Website"
         ]
+    },
+    {
+        "id": 3,
+        "name": "SMM Telegram Bot",
+        "slug": "smm-telegram-bot",
+        "description": "PHP-based Telegram bot for a paid-to-click social media engagement marketplace.",
+        "tech_stack": "PHP, MySQL, PDO, Telegram API",
+        "demo_url": "https:\/\/app.faydev.my.id\/smm-bot",
+        "github_url": "https:\/\/github.com\/FAYnim",
+        "preview_image": null,
+        "status": "Live",
+        "categories": [
+            "chatbot"
+        ]
     }
 ]

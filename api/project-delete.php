@@ -44,12 +44,6 @@ try {
     jsonResponse(false, 'Error: ' . $e->getMessage());
 }
 
-function logActivity($action, $description) {
-    $pdo = getDB();
-    $stmt = $pdo->prepare('INSERT INTO activity_logs (action, description) VALUES (?, ?)');
-    $stmt->execute([$action, $description]);
-}
-
 function generateProjectsJson() {
     $pdo = getDB();
     $stmt = $pdo->query("

@@ -35,12 +35,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 }
-
-function logActivity($action, $description) {
-    $pdo = getDB();
-    $stmt = $pdo->prepare('INSERT INTO activity_logs (action, description) VALUES (?, ?)');
-    $stmt->execute([$action, $description]);
-}
 ?>
 <!DOCTYPE html>
 <html lang="en">

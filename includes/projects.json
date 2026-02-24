@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "name": "Portfolio",
+        "slug": "portfolio",
+        "description": "Personal portfolio website showcasing projects and skills",
+        "tech_stack": "HTML, CSS, Javascript",
+        "demo_url": "https:\/\/portfolio.faydev.my.id",
+        "github_url": "https:\/\/github.com\/FAYnim",
+        "preview_image": null,
+        "status": "Live",
+        "categories": [
+            "Personal Website"
+        ]
+    },
+    {
+        "id": 2,
+        "name": "FAY Panel",
+        "slug": "fay-panel",
+        "description": "Simple Content Management System I built to practice CRUD architecture, database structure, and how an admin panel actually works.",
+        "tech_stack": "HTML, CSS, jQuery, PHP, MySQL",
+        "demo_url": "https:\/\/panel.faydev.my.id",
+        "github_url": "https:\/\/github.com\/FAYnim",
+        "preview_image": null,
+        "status": "Archived",
+        "categories": [
+            "Personal Website"
+        ]
+    }
+]

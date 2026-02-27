@@ -18,12 +18,17 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             --bg-sidebar-hover: #2d3338;
             --bg-card: #ffffff;
             --bg-table-header: #f8f9fa;
+            --bg-table-row: #ffffff;
+            --bg-table-row-hover: #f8f9fa;
             --bg-hover: #f8f9fa;
+            --bg-input: #ffffff;
             --text-primary: #212529;
             --text-secondary: #6c757d;
             --text-sidebar: #adb5bd;
             --text-sidebar-active: #ffffff;
+            --text-input: #212529;
             --border-color: #dee2e6;
+            --border-input: #ced4da;
             --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
             --accent-color: #0d6efd;
         }
@@ -34,12 +39,17 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             --bg-sidebar-hover: #161b22;
             --bg-card: #22272e;
             --bg-table-header: #2d333b;
+            --bg-table-row: #22272e;
+            --bg-table-row-hover: #2d333b;
             --bg-hover: #2d333b;
+            --bg-input: #2d333b;
             --text-primary: #e6edf3;
             --text-secondary: #7d8590;
             --text-sidebar: #7d8590;
             --text-sidebar-active: #e6edf3;
+            --text-input: #e6edf3;
             --border-color: #444c56;
+            --border-input: #444c56;
             --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.3);
             --accent-color: #539bf5;
         }
@@ -51,8 +61,54 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
 		#btn-logout { border-left: 1px solid var(--border-color); }
         .main-content { min-height: 100vh; }
         .card { border: none; box-shadow: var(--shadow-sm); background: var(--bg-card); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
-        .table th { font-weight: 600; background: var(--bg-table-header); color: var(--text-primary); }
-        .table { color: var(--text-primary); }
+        
+        /* Form Controls */
+        .form-control, .form-select, textarea.form-control {
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            border-color: var(--border-input);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .form-control:focus, .form-select:focus, textarea.form-control:focus {
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-control::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7;
+        }
+        .form-label {
+            color: var(--text-primary);
+        }
+        
+        /* Table Styling */
+        .table { 
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        .table th { 
+            font-weight: 600; 
+            background: var(--bg-table-header); 
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        .table td {
+            background: var(--bg-table-row);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        .table tbody tr:hover td {
+            background: var(--bg-table-row-hover);
+        }
+        .table-striped tbody tr:nth-of-type(odd) td {
+            background: var(--bg-table-row);
+        }
+        .table-striped tbody tr:nth-of-type(even) td {
+            background: var(--bg-hover);
+        }
+        
         .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
         .sortable-item { cursor: move; }
         .sortable-item:hover { background: var(--bg-hover); }

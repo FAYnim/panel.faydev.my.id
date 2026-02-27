@@ -48,17 +48,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         :root {
             --bg-body: #f5f5f5;
             --bg-card: #ffffff;
+            --bg-input: #ffffff;
             --text-primary: #212529;
             --text-muted: #6c757d;
+            --text-input: #212529;
+            --border-input: #ced4da;
             --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            --accent-color: #0d6efd;
         }
         
         [data-theme="dark"] {
             --bg-body: #1a1d20;
             --bg-card: #22272e;
+            --bg-input: #2d333b;
             --text-primary: #e6edf3;
             --text-muted: #7d8590;
+            --text-input: #e6edf3;
+            --border-input: #444c56;
             --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.3);
+            --accent-color: #539bf5;
         }
         
         body { 
@@ -78,6 +86,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             transition: background-color 0.3s ease, color 0.3s ease;
         }
         .text-muted { color: var(--text-muted) !important; }
+        
+        /* Form Controls */
+        .form-control {
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            border-color: var(--border-input);
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+        }
+        .form-control:focus {
+            background-color: var(--bg-input);
+            color: var(--text-input);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+        }
+        .form-label {
+            color: var(--text-primary);
+        }
+        .alert {
+            border-color: var(--border-input);
+        }
         
         /* Theme toggle button */
         #theme-toggle {

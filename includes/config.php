@@ -4,7 +4,7 @@ require_once __DIR__ . '/db.php';
 $db = new Database();
 $pdo = $db->getConnection();
 
-define('SITE_URL', 'http://localhost/faydev/control-panel');
+define('SITE_URL', 'http://localhost/faydev/panel.faydev.my.id');
 define('UPLOAD_PATH', dirname(__DIR__) . '/uploads/');
 define('UPLOAD_URL', SITE_URL . '/uploads/');
 define('BACKUP_PATH', dirname(__DIR__) . '/backup/');

@@ -17,14 +17,14 @@ $project = [
     'status' => 'Draft'
 ];
 
-$categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll();
+$categories = $pdo->query("SELECT * FROM categories ORDER BY name")->fetchAll(PDO::FETCH_ASSOC);
 
 if (isset($_GET['id'])) {
     $pageTitle = 'Edit Project';
     $isEdit = true;
     $stmt = $pdo->prepare("SELECT * FROM projects WHERE id = ?");
     $stmt->execute([$_GET['id']]);
-    $project = $stmt->fetch();
+    $project = $stmt->fetch(PDO::FETCH_ASSOC);
     
     if (!$project) {
         header('Location: projects.php');
@@ -63,7 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     
     $slugCheck = $pdo->prepare("SELECT id FROM projects WHERE slug = ? AND id != ?");
     $slugCheck->execute([$slug, $isEdit ? $project['id'] : 0]);
-    if ($slugCheck->fetch()) {
+    if ($slugCheck->fetch(PDO::FETCH_ASSOC)) {
         $errors[] = 'Slug already exists';
     }
     

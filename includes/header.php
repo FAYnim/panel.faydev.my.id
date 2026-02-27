@@ -28,7 +28,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         #hamburger-btn {
             position: fixed;
             top: 15px;
-            left: 15px;
+            right: 15px;
             z-index: 1050;
             background: #343a40;
             border: none;

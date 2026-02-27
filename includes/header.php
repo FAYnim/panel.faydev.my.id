@@ -11,17 +11,51 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
     <style>
-        body { background: #f8f9fa; }
-        .sidebar { min-height: 100vh; background: #343a40; }
-        .sidebar a { color: #adb5bd; text-decoration: none; padding: 12px 20px; display: block; border-left: 3px solid transparent; }
-        .sidebar a:hover, .sidebar a.active { background: #2d3338; color: #fff; border-left-color: #0d6efd; }
-		#btn-logout { border-left: 1px solid #f8f9fa; }
+        /* CSS Custom Properties for Theming */
+        :root {
+            --bg-body: #f8f9fa;
+            --bg-sidebar: #343a40;
+            --bg-sidebar-hover: #2d3338;
+            --bg-card: #ffffff;
+            --bg-table-header: #f8f9fa;
+            --bg-hover: #f8f9fa;
+            --text-primary: #212529;
+            --text-secondary: #6c757d;
+            --text-sidebar: #adb5bd;
+            --text-sidebar-active: #ffffff;
+            --border-color: #dee2e6;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+            --accent-color: #0d6efd;
+        }
+        
+        [data-theme="dark"] {
+            --bg-body: #1a1d20;
+            --bg-sidebar: #0d1117;
+            --bg-sidebar-hover: #161b22;
+            --bg-card: #22272e;
+            --bg-table-header: #2d333b;
+            --bg-hover: #2d333b;
+            --text-primary: #e6edf3;
+            --text-secondary: #7d8590;
+            --text-sidebar: #7d8590;
+            --text-sidebar-active: #e6edf3;
+            --border-color: #444c56;
+            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.3);
+            --accent-color: #539bf5;
+        }
+        
+        body { background: var(--bg-body); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
+        .sidebar { min-height: 100vh; background: var(--bg-sidebar); }
+        .sidebar a { color: var(--text-sidebar); text-decoration: none; padding: 12px 20px; display: block; border-left: 3px solid transparent; transition: all 0.3s ease; }
+        .sidebar a:hover, .sidebar a.active { background: var(--bg-sidebar-hover); color: var(--text-sidebar-active); border-left-color: var(--accent-color); }
+		#btn-logout { border-left: 1px solid var(--border-color); }
         .main-content { min-height: 100vh; }
-        .card { border: none; box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075); }
-        .table th { font-weight: 600; background: #f8f9fa; }
+        .card { border: none; box-shadow: var(--shadow-sm); background: var(--bg-card); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
+        .table th { font-weight: 600; background: var(--bg-table-header); color: var(--text-primary); }
+        .table { color: var(--text-primary); }
         .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
         .sortable-item { cursor: move; }
-        .sortable-item:hover { background: #f8f9fa; }
+        .sortable-item:hover { background: var(--bg-hover); }
         .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
         
         /* Hamburger Button */
@@ -30,9 +64,9 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             top: 15px;
             right: 15px;
             z-index: 1050;
-            background: #343a40;
+            background: var(--bg-sidebar);
             border: none;
-            color: white;
+            color: var(--text-sidebar-active);
             width: 45px;
             height: 45px;
             border-radius: 5px;
@@ -43,7 +77,7 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         #hamburger-btn:hover {
-            background: #2d3338;
+            background: var(--bg-sidebar-hover);
         }
         
         /* Sidebar Mobile Styles */
@@ -90,14 +124,14 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
             right: 15px;
             background: transparent;
             border: none;
-            color: white;
+            color: var(--text-sidebar-active);
             font-size: 24px;
             cursor: pointer;
             padding: 5px 10px;
             line-height: 1;
         }
         .sidebar-close-btn:hover {
-            color: #0d6efd;
+            color: var(--accent-color);
         }
         
         @media (min-width: 768px) {
@@ -161,6 +195,12 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
                         </li>
                     </ul>
                     <hr>
+                    <div class="px-3 mb-3">
+                        <button id="theme-toggle" class="btn btn-outline-secondary btn-sm w-100" title="Toggle Theme">
+                            <i class="fas fa-moon me-1" id="theme-icon"></i>
+                            <span id="theme-text">Dark Mode</span>
+                        </button>
+                    </div>
                     <div class="px-3">
                         <a href="logout.php" id="btn-logout" class="btn btn-outline-light btn-sm w-100">
                             <i class="fas fa-sign-out-alt me-1"></i> Logout

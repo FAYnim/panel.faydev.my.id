@@ -60,7 +60,13 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         .sidebar a:hover, .sidebar a.active { background: var(--bg-sidebar-hover); color: var(--text-sidebar-active); border-left-color: var(--accent-color); }
 		#btn-logout { border-left: 1px solid var(--border-color); }
         .main-content { min-height: 100vh; }
-        .card { border: none; box-shadow: var(--shadow-sm); background: var(--bg-card); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
+        .card { 
+            border: 1px solid var(--border-color); 
+            box-shadow: var(--shadow-sm); 
+            background: var(--bg-card); 
+            color: var(--text-primary); 
+            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
+        }
         
         /* Form Controls */
         .form-control, .form-select, textarea.form-control {
@@ -107,6 +113,29 @@ $currentPage = basename($_SERVER['PHP_SELF'], '.php');
         }
         .table-striped tbody tr:nth-of-type(even) td {
             background: var(--bg-hover);
+        }
+        
+        /* Card Header */
+        .card-header {
+            background: var(--bg-table-header);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+        }
+        
+        /* List Group */
+        .list-group-item {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--border-color);
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        .list-group-item:hover {
+            background: var(--bg-hover);
+        }
+        
+        /* Text Utilities */
+        .text-muted {
+            color: var(--text-secondary) !important;
         }
         
         .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }

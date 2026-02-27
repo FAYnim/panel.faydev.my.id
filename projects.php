@@ -116,13 +116,12 @@ require_once __DIR__ . '/includes/header.php';
                         <th>Slug</th>
                         <th>Categories</th>
                         <th>Status</th>
-                        <th>Preview</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($projects)): ?>
-                        <tr><td colspan="6" class="text-center text-muted py-4">No projects found.</td></tr>
+                        <tr>                        <td colspan="5" class="text-center text-muted py-4">No projects found.</td></tr>
                     <?php else: ?>
                         <?php foreach ($projects as $project): ?>
                             <tr>
@@ -141,13 +140,6 @@ require_once __DIR__ . '/includes/header.php';
                                     <span class="badge bg-<?= $project['status'] == 'Live' ? 'success' : ($project['status'] == 'Development' ? 'warning' : ($project['status'] == 'Draft' ? 'info' : 'secondary')) ?>">
                                         <?= $project['status'] ?>
                                     </span>
-                                </td>
-                                <td>
-                                    <?php if ($project['preview_image']): ?>
-                                        <img src="<?= UPLOAD_URL . $project['preview_image'] ?>" alt="Preview" style="width: 50px; height: 50px; object-fit: cover;" class="rounded">
-                                    <?php else: ?>
-                                        <span class="text-muted">No image</span>
-                                    <?php endif; ?>
                                 </td>
                                 <td>
                                     <?php if ($showDeleted): ?>

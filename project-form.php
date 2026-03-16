@@ -56,6 +56,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<script src="assets/js/project-form.js"></script>
+<script src="src/js/project-form.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

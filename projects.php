@@ -38,6 +38,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<script src="assets/js/projects.js"></script>
+<script src="src/js/projects.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

@@ -42,6 +42,6 @@ require_once __DIR__ . '/includes/header.php';
     </section>
 </section>
 
-<script src="assets/js/index.js"></script>
+<script src="src/js/index.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

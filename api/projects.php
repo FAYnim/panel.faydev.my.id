@@ -280,7 +280,7 @@ function validateDate(string $date): bool
 function deleteProjectFileIfLocal(string $relativePath): void
 {
     $relativePath = trim($relativePath);
-    if ($relativePath === '' || strpos($relativePath, 'assets/images/uploads/') !== 0) {
+    if ($relativePath === '' || strpos($relativePath, 'src/images/uploads/') !== 0) {
         return;
     }
 

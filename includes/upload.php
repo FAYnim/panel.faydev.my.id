@@ -62,7 +62,7 @@ function handleImageUpload(array $file, int $maxWidth = 1200, int $maxHeight = 7
             return ['success' => false, 'message' => 'Failed to store uploaded image'];
         }
 
-        return ['success' => true, 'path' => 'assets/images/uploads/' . $filename];
+        return ['success' => true, 'path' => 'src/images/uploads/' . $filename];
     }
 
     switch ($mimeType) {
@@ -136,5 +136,5 @@ function handleImageUpload(array $file, int $maxWidth = 1200, int $maxHeight = 7
         return ['success' => false, 'message' => 'Failed to save resized image'];
     }
 
-    return ['success' => true, 'path' => 'assets/images/uploads/' . $filename];
+    return ['success' => true, 'path' => 'src/images/uploads/' . $filename];
 }

@@ -60,7 +60,7 @@ panel.faydev.my.id/
 │   ├── social.php               # Social links list
 │   └── social-form.php          # Add / edit social link form
 │
-└── assets/
+└── src/
     ├── css/dashboard.css        # Design system (tokens, themes, components)
     ├── js/dashboard.js          # Client-side logic (API wrapper, toasts, modals)
     └── images/uploads/          # Uploaded project thumbnails

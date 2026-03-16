@@ -48,6 +48,6 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
-<script src="assets/js/social-form.js"></script>
+<script src="src/js/social-form.js"></script>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>

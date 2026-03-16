@@ -1,300 +1,69 @@
-<?php 
-$currentPage = basename($_SERVER['PHP_SELF'], '.php');
+<?php
+require_once __DIR__ . '/auth.php';
+require_once __DIR__ . '/csrf.php';
+
+requireAuth();
+
+$currentAdmin = getCurrentAdmin();
+$csrfToken = generateCsrfToken();
+$pageTitle = isset($pageTitle) && is_string($pageTitle) && $pageTitle !== '' ? $pageTitle : 'Dashboard';
+$activePage = isset($activePage) && is_string($activePage) ? $activePage : '';
+
+$cookieTheme = $_COOKIE['theme'] ?? 'dark';
+$initialTheme = in_array($cookieTheme, ['dark', 'light'], true) ? $cookieTheme : 'dark';
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="<?= htmlspecialchars($initialTheme, ENT_QUOTES, 'UTF-8') ?>">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= isset($pageTitle) ? $pageTitle . ' - ' : '' ?>Faydev Control Panel</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.13.2/themes/base/jquery-ui.css">
-    <style>
-        /* CSS Custom Properties for Theming */
-        :root {
-            --bg-body: #f8f9fa;
-            --bg-sidebar: #343a40;
-            --bg-sidebar-hover: #2d3338;
-            --bg-card: #ffffff;
-            --bg-table-header: #f8f9fa;
-            --bg-table-row: #ffffff;
-            --bg-table-row-hover: #f8f9fa;
-            --bg-hover: #f8f9fa;
-            --bg-input: #ffffff;
-            --text-primary: #212529;
-            --text-secondary: #6c757d;
-            --text-sidebar: #adb5bd;
-            --text-sidebar-active: #ffffff;
-            --text-input: #212529;
-            --border-color: #dee2e6;
-            --border-input: #ced4da;
-            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
-            --accent-color: #0d6efd;
-        }
-        
-        [data-theme="dark"] {
-            --bg-body: #1a1d20;
-            --bg-sidebar: #0d1117;
-            --bg-sidebar-hover: #161b22;
-            --bg-card: #22272e;
-            --bg-table-header: #2d333b;
-            --bg-table-row: #22272e;
-            --bg-table-row-hover: #2d333b;
-            --bg-hover: #2d333b;
-            --bg-input: #2d333b;
-            --text-primary: #e6edf3;
-            --text-secondary: #7d8590;
-            --text-sidebar: #7d8590;
-            --text-sidebar-active: #e6edf3;
-            --text-input: #e6edf3;
-            --border-color: #444c56;
-            --border-input: #444c56;
-            --shadow-sm: 0 0.125rem 0.25rem rgba(0,0,0,0.3);
-            --accent-color: #539bf5;
-        }
-        
-        body { background: var(--bg-body); color: var(--text-primary); transition: background-color 0.3s ease, color 0.3s ease; }
-        .sidebar { min-height: 100vh; background: var(--bg-sidebar); }
-        .sidebar a { color: var(--text-sidebar); text-decoration: none; padding: 12px 20px; display: block; border-left: 3px solid transparent; transition: all 0.3s ease; }
-        .sidebar a:hover, .sidebar a.active { background: var(--bg-sidebar-hover); color: var(--text-sidebar-active); border-left-color: var(--accent-color); }
-		#btn-logout { border-left: 1px solid var(--border-color); }
-        .main-content { min-height: 100vh; }
-        .card { 
-            border: 1px solid var(--border-color); 
-            box-shadow: var(--shadow-sm); 
-            background: var(--bg-card); 
-            color: var(--text-primary); 
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease; 
-        }
-        
-        /* Form Controls */
-        .form-control, .form-select, textarea.form-control {
-            background-color: var(--bg-input);
-            color: var(--text-input);
-            border-color: var(--border-input);
-            transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
-        }
-        .form-control:focus, .form-select:focus, textarea.form-control:focus {
-            background-color: var(--bg-input);
-            color: var(--text-input);
-            border-color: var(--accent-color);
-            box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-        }
-        .form-control::placeholder {
-            color: var(--text-secondary);
-            opacity: 0.7;
-        }
-        .form-label {
-            color: var(--text-primary);
-        }
-        
-        /* Table Styling */
-        .table { 
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-        .table th { 
-            font-weight: 600; 
-            background: var(--bg-table-header); 
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-        .table td {
-            background: var(--bg-table-row);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-        .table tbody tr:hover td {
-            background: var(--bg-table-row-hover);
-        }
-        .table-striped tbody tr:nth-of-type(odd) td {
-            background: var(--bg-table-row);
-        }
-        .table-striped tbody tr:nth-of-type(even) td {
-            background: var(--bg-hover);
-        }
-        
-        /* Card Header */
-        .card-header {
-            background: var(--bg-table-header);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-        }
-        
-        /* List Group */
-        .list-group-item {
-            background: var(--bg-card);
-            color: var(--text-primary);
-            border-color: var(--border-color);
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-        .list-group-item:hover {
-            background: var(--bg-hover);
-        }
-        
-        /* Text Utilities */
-        .text-muted {
-            color: var(--text-secondary) !important;
-        }
-        
-        .btn-action { padding: 0.25rem 0.5rem; font-size: 0.875rem; }
-        .sortable-item { cursor: move; }
-        .sortable-item:hover { background: var(--bg-hover); }
-        .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; }
-        
-        /* Hamburger Button */
-        #hamburger-btn {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            z-index: 1050;
-            background: var(--bg-sidebar);
-            border: none;
-            color: var(--text-sidebar-active);
-            width: 45px;
-            height: 45px;
-            border-radius: 5px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        }
-        #hamburger-btn:hover {
-            background: var(--bg-sidebar-hover);
-        }
-        
-        /* Sidebar Mobile Styles */
-        @media (max-width: 767.98px) {
-            .sidebar {
-                position: fixed;
-                top: 0;
-                left: -100%;
-                width: 280px;
-                z-index: 1040;
-                transition: left 0.3s ease-in-out;
-                box-shadow: 2px 0 10px rgba(0,0,0,0.3);
+    <meta name="csrf-token" content="<?= htmlspecialchars($csrfToken, ENT_QUOTES, 'UTF-8') ?>">
+    <title><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?> — Faydev Dashboard</title>
+    <script>
+        (function () {
+            var stored = localStorage.getItem('theme');
+            if (stored === 'dark' || stored === 'light') {
+                document.documentElement.setAttribute('data-theme', stored);
             }
-            .sidebar.show {
-                left: 0;
-            }
-            .main-content {
-                margin-left: 0 !important;
-            }
-        }
-        
-        /* Backdrop */
-        .sidebar-backdrop {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            z-index: 1030;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.3s ease-in-out;
-        }
-        .sidebar-backdrop.show {
-            display: block;
-            opacity: 1;
-        }
-        
-        /* Close button in sidebar */
-        .sidebar-close-btn {
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            background: transparent;
-            border: none;
-            color: var(--text-sidebar-active);
-            font-size: 24px;
-            cursor: pointer;
-            padding: 5px 10px;
-            line-height: 1;
-        }
-        .sidebar-close-btn:hover {
-            color: var(--accent-color);
-        }
-        
-        @media (min-width: 768px) {
-            #hamburger-btn {
-                display: none;
-            }
-        }
-    </style>
+        })();
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="/assets/css/dashboard.css">
 </head>
 <body>
-    <!-- Hamburger Button for Mobile -->
-    <button id="hamburger-btn" class="d-md-none" aria-label="Toggle Sidebar">
-        <i class="fas fa-bars fa-lg"></i>
-    </button>
-    
-    <!-- Sidebar Backdrop -->
-    <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
-    
-    <div class="container-fluid">
-        <div class="row">
-            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar">
-                <!-- Close Button for Mobile -->
-                <button class="sidebar-close-btn d-md-none" id="sidebar-close-btn" aria-label="Close Sidebar">
-                    <i class="fas fa-times"></i>
-                </button>
-                
-                <div class="position-sticky pt-3">
-                    <div class="px-3 mt-1 text-white">
-                        <h3><i class="fas fa-code me-2"></i>Faydev</h3>
-                    </div>
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a href="index.php" class="<?= $currentPage == 'index' ? 'active' : '' ?>">
-                                <i class="fas fa-home me-2"></i> Dashboard
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="projects.php" class="<?= in_array($currentPage, ['projects', 'project-form']) ? 'active' : '' ?>">
-                                <i class="fas fa-folder me-2"></i> Projects
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="categories.php" class="<?= $currentPage == 'categories' ? 'active' : '' ?>">
-                                <i class="fas fa-tags me-2"></i> Categories
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="app-config.php" class="<?= $currentPage == 'app-config' ? 'active' : '' ?>">
-                                <i class="fas fa-mobile-alt me-2"></i> App Config
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="portfolio-config.php" class="<?= $currentPage == 'portfolio-config' ? 'active' : '' ?>">
-                                <i class="fas fa-briefcase me-2"></i> Portfolio Config
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="logs.php" class="<?= $currentPage == 'logs' ? 'active' : '' ?>">
-                                <i class="fas fa-history me-2"></i> Activity Logs
-                            </a>
-                        </li>
-                    </ul>
-                    <hr>
-                    <div class="px-3 mb-3">
-                        <button id="theme-toggle" class="btn btn-outline-secondary btn-sm w-100" title="Toggle Theme">
-                            <i class="fas fa-moon me-1" id="theme-icon"></i>
-                            <span id="theme-text">Dark Mode</span>
-                        </button>
-                    </div>
-                    <div class="px-3">
-                        <a href="logout.php" id="btn-logout" class="btn btn-outline-light btn-sm w-100">
-                            <i class="fas fa-sign-out-alt me-1"></i> Logout
-                        </a>
-                    </div>
-                </div>
-            </nav>
-            
-            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4 main-content">
-                <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                    <h1 class="h2"><?= $pageTitle ?? 'Dashboard' ?></h1>
-                </div>
+    <div class="dashboard">
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h1 class="sidebar-logo">Faydev</h1>
+            <button class="sidebar-toggle" id="sidebarToggle" type="button" aria-label="Toggle sidebar"><i class="fas fa-bars"></i></button>
+        </div>
+        <nav class="sidebar-nav">
+            <a class="nav-item <?= $activePage === 'dashboard' ? 'active' : '' ?>" href="/index.php">
+                <i class="fas fa-home"></i><span>Dashboard</span>
+            </a>
+            <a class="nav-item <?= $activePage === 'projects' ? 'active' : '' ?>" href="/pages/projects.php">
+                <i class="fas fa-folder-open"></i><span>Projects</span>
+            </a>
+            <a class="nav-item <?= $activePage === 'social' ? 'active' : '' ?>" href="/pages/social.php">
+                <i class="fas fa-share-alt"></i><span>Social Links</span>
+            </a>
+            <div class="nav-divider"></div>
+            <a class="nav-item" href="#" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i><span>Logout</span>
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="theme-toggle" id="themeToggle" title="Toggle theme" type="button">
+                <i class="fas fa-moon"></i>
+            </button>
+        </div>
+    </aside>
+
+    <main class="main-content" id="mainContent">
+        <header class="topbar">
+            <div class="topbar-title"><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></div>
+            <div class="topbar-admin">Hi, <?= htmlspecialchars($currentAdmin['username'] ?? 'Admin', ENT_QUOTES, 'UTF-8') ?></div>
+        </header>

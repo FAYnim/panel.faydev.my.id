@@ -1,178 +1,173 @@
-# Faydev Control Panel
+<div align="center">
 
-A web-based dashboard for managing portfolio and application projects across multiple subdomains. This control panel serves as a centralized management system that generates static JSON files for frontend websites to consume.
+# Faydev Dashboard
+
+**CMS admin panel for [faydev.my.id](https://faydev.my.id)**
+
+[![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4?style=flat-square&logo=php&logoColor=white)](https://www.php.net/)
+[![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-4479a1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
+[![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen?style=flat-square)]()
+
+[Overview](#overview) · [Features](#features) · [Project Structure](#project-structure) · [Getting Started](#getting-started) · [API Reference](#api-reference) · [Security](#security) · [Roadmap](#roadmap)
+
+</div>
+
+---
 
 ## Overview
 
-Faydev Control Panel is designed to manage project data in one place and distribute it to multiple websites. It uses MySQL as the primary database and generates JSON files that can be read by your frontend applications.
+A standalone admin dashboard at `panel.faydev.my.id` for managing the content displayed on the [faydev.my.id](https://faydev.my.id) landing page. Both apps share the same MySQL database — the dashboard writes, the landing page reads.
 
-### What It Does
-
-- Manages project portfolio with categories and status tracking
-- Distributes projects to different subdomains (app and portfolio)
-- Generates JSON files automatically when data changes
-- Keeps activity logs of all changes
-- Creates automatic backups of JSON files before updates
+Built with vanilla PHP + JavaScript. No Composer, no npm, no build tools.
 
 ## Features
 
-- **Project Management**: Create, edit, soft-delete, and restore projects
-- **Category System**: Organize projects into categories
-- **Multi-Subdomain Support**: Configure which projects appear on each subdomain
-- **Auto JSON Generation**: JSON files update automatically when you make changes
-- **Activity Logging**: Track all changes made through the dashboard
-- **Backup System**: Automatic backup of JSON files before overwriting
+**Phase 1 (current):**
 
-## Technology Stack
-
-- **Backend**: PHP
-- **Database**: MySQL
-- **Frontend**: HTML, Bootstrap 5, jQuery, Font Awesome
-- **Authentication**: Session-based login
-
-## Requirements
-
-- PHP 7.4 or higher
-- MySQL 5.7 or higher
-- Web server (Apache/Nginx)
-- PDO extension enabled
-
-## Installation
-
-### Step 1: Set Up the Database
-
-1. Open your database management tool (phpMyAdmin, MySQL Workbench, or command line)
-2. Run the SQL commands from `database/schema.sql`
-3. This will create the database and all required tables
-
-### Step 2: Configure the Application
-
-1. Open `includes/config.php`
-2. Update the database connection settings in `includes/db.php`:
-   - Host (usually `localhost`)
-   - Database name
-   - Username
-   - Password
-
-### Step 3: Set Folder Permissions
-
-Ensure the following folders are writable:
-- `uploads/` - for storing project images
-- `backup/` - for JSON backups
-- `data/` - for generated JSON files
-
-### Step 4: Access the Dashboard
-
-1. Open your browser and navigate to the project folder
-2. Login with the default credentials:
-   - Email: `admin@faydev.my.id`
-   - Password: `admin123`
-
-**Important**: Change the admin password after first login for security.
+- Session-based authentication with bcrypt passwords and CSRF protection
+- Projects CRUD — add, edit, delete portfolio projects with image upload and drag-drop reordering
+- Social Links CRUD — manage social media links with Font Awesome icon picker and display ordering
+- Dashboard home with KPI cards (project count, social link count, last-updated timestamps)
+- Dark / light theme toggle
+- Responsive sidebar layout (collapsible on desktop, overlay on mobile)
 
 ## Project Structure
 
 ```
-control-panel/
-├── api/                    # AJAX endpoints for actions
-├── backup/                 # JSON backup files (auto-generated)
-├── data/                   # JSON output files (auto-generated)
-├── database/               # SQL schema files
-├── includes/               # Shared PHP files
-│   ├── config.php         # Main configuration
-│   ├── db.php            # Database connection
-│   ├── header.php        # Page header
-│   └── footer.php        # Page footer
-├── uploads/               # Image uploads
-├── index.php              # Dashboard home
-├── login.php              # Login page
-├── logout.php             # Logout handler
-├── projects.php          # Project management
-├── project-form.php       # Add/Edit project
-├── categories.php         # Category management
-├── app-config.php        # App subdomain settings
-├── portfolio-config.php  # Portfolio subdomain settings
-└── logs.php              # Activity logs
+panel.faydev.my.id/
+├── index.php                    # Dashboard home
+├── login.php                    # Authentication page
+├── database-dashboard.sql       # Migration script (admins, site_settings, display_order)
+├── .htaccess                    # Security headers, directory protection
+│
+├── api/
+│   ├── auth.php                 # POST login / logout
+│   ├── dashboard.php            # GET stats (counts, timestamps)
+│   ├── projects.php             # CRUD for projects
+│   └── social.php               # CRUD for social links
+│
+├── includes/
+│   ├── db.php                   # PDO connection singleton
+│   ├── auth.php                 # Session management (2h timeout)
+│   ├── csrf.php                 # CSRF token generation / validation
+│   ├── upload.php               # Image upload + GD resize
+│   ├── header.php               # Shared layout header + sidebar
+│   └── footer.php               # Shared layout footer + scripts
+│
+├── pages/
+│   ├── projects.php             # Project list with data table
+│   ├── project-form.php         # Add / edit project form
+│   ├── social.php               # Social links list
+│   └── social-form.php          # Add / edit social link form
+│
+└── assets/
+    ├── css/dashboard.css        # Design system (tokens, themes, components)
+    ├── js/dashboard.js          # Client-side logic (API wrapper, toasts, modals)
+    └── images/uploads/          # Uploaded project thumbnails
 ```
 
-## How to Use
+## Getting Started
 
-### Managing Projects
+### Prerequisites
 
-1. Go to the Projects page from the navigation
-2. Click "Add Project" to create a new project
-3. Fill in the project details:
-   - Name (required)
-   - Description
-   - Technology stack
-   - Demo URL
-   - GitHub URL
-   - Preview image
-   - Status (Draft, Development, Live, Archived)
-   - Categories
-4. Click Save
+- PHP 7.4+ with `pdo_mysql` and `gd` extensions
+- MySQL 5.7+
+- Apache with `mod_rewrite` (or XAMPP)
 
-### Managing Categories
+### 1. Database setup
 
-1. Go to the Categories page
-2. Add new categories to organize your projects
-3. You can see how many projects are in each category
+The dashboard shares the `fayd7716_project` database with the landing page. Run the migration to add dashboard-specific tables:
 
-### Configuring Subdomains
+```bash
+mysql -u root -p fayd7716_project < database-dashboard.sql
+```
 
-**App Configuration** (`app.faydev.my.id`):
-- Select which projects to display
-- Drag and drop to reorder
-- No limit on number of projects
+Or import `database-dashboard.sql` via phpMyAdmin.
 
-**Portfolio Configuration** (`portfolio.faydev.my.id`):
-- Select up to 3 projects to display
-- Drag and drop to reorder
-- Only the top 3 will appear on the website
+This creates the `admins` and `site_settings` tables, adds `display_order` to `projects` and `social_links`, and seeds a default admin user.
 
-### Viewing Activity Logs
+### 2. Configure database connection
 
-The Logs page shows a history of all actions:
-- Project created, updated, deleted, restored
-- Category created or deleted
-- Configuration changes
+Edit `includes/db.php` with your credentials:
 
-## JSON Output Files
+```php
+define('DB_HOST', 'localhost');
+define('DB_USER', 'your_user');
+define('DB_PASS', 'your_password');
+define('DB_NAME', 'fayd7716_project');
+```
 
-The system generates three JSON files in the `data/` folder:
+> [!WARNING]
+> Do not commit production credentials. Use environment variables or a server-level config on deployed environments.
 
-1. **projects.json** - All active projects with full details
-2. **app-config.json** - List of project slugs for the app subdomain
-3. **portfolio-config.json** - List of project slugs for the portfolio subdomain
+### 3. Start the server
 
-Your frontend websites can read these JSON files to display projects.
+Place the project in your Apache webroot and visit:
 
-## Security Notes
+```
+http://localhost/panel.faydev.my.id/login.php
+```
 
-- The default admin password should be changed immediately
-- Keep your database credentials secure
-- The `uploads/` folder should only accept image files
-- Session timeout follows PHP default settings
+### 4. Log in
 
-## Troubleshooting
+Default credentials:
 
-### Cannot Connect to Database
-- Check your database credentials in `includes/db.php`
-- Ensure MySQL service is running
-- Verify the database exists
+| Field    | Value      |
+|----------|------------|
+| Username | `admin`    |
+| Password | `admin123` |
 
-### JSON Files Not Generating
-- Check folder permissions on `data/`, `backup/`, and `uploads/`
-- Verify PHP has write permissions
+> [!WARNING]
+> Change the default password immediately after first login.
 
-### Login Not Working
-- Clear browser cookies and try again
-- Check session save path is writable
+## API Reference
 
-### Images Not Uploading
-- Verify `uploads/` folder is writable
-- Check PHP upload settings in php.ini
+All endpoints require an active admin session. Unauthorized requests return `401`.
 
-## License
+Mutation endpoints (POST) require a CSRF token via the `X-CSRF-Token` header or `csrf_token` POST field.
 
-This project is for personal use.
+### Response format
+
+```json
+{ "success": true, "data": { ... } }
+{ "success": false, "message": "Error description" }
+```
+
+### Endpoints
+
+| Method | Endpoint | Action | Description |
+|--------|----------|--------|-------------|
+| POST | `/api/auth.php` | `login` | Authenticate with username + password |
+| POST | `/api/auth.php` | `logout` | Destroy session |
+| GET | `/api/dashboard.php` | — | Project/social counts and last-updated timestamps |
+| GET | `/api/projects.php` | — | List all projects |
+| POST | `/api/projects.php?action=create` | `create` | Create project (multipart form) |
+| POST | `/api/projects.php?action=update` | `update` | Update project by ID |
+| POST | `/api/projects.php?action=delete` | `delete` | Delete project(s) by ID |
+| GET | `/api/social.php` | — | List all social links |
+| POST | `/api/social.php?action=create` | `create` | Create social link |
+| POST | `/api/social.php?action=update` | `update` | Update social link by ID |
+| POST | `/api/social.php?action=delete` | `delete` | Delete social link(s) |
+| POST | `/api/social.php?action=reorder` | `reorder` | Batch update display order |
+
+## Security
+
+- Passwords hashed with `password_hash()` (bcrypt)
+- Session timeout after 2 hours of inactivity
+- CSRF tokens on all state-changing requests
+- `.htaccess` blocks direct access to `includes/`, `docs/`, `.sql`, and `.md` files
+- Security headers: `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Referrer-Policy`
+- API endpoints are session-only (no `Access-Control-Allow-Origin: *`)
+- All user input escaped with `htmlspecialchars()` in templates
+- Prepared statements for all database queries
+
+## Roadmap
+
+| Phase | Scope | Status |
+|-------|-------|--------|
+| 1 — MVP | Auth, Projects CRUD, Social Links CRUD, Dashboard Home | In progress |
+| 2 — Content Sections | Hero, About, Skills, Services, Contact, Footer, SEO management | Planned |
+| 3 — Advanced | Bulk operations, activity log, image optimization, analytics widget | Planned |
+
+> [!NOTE]
+> See [`PRD-DASHBOARD.md`](PRD-DASHBOARD.md) for the full product requirements document.

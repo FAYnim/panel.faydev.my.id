@@ -1,13 +1,13 @@
 <?php
 $pageTitle = 'Projects';
 $activePage = 'projects';
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="page-section">
     <div class="page-header page-header-between">
         <h1 class="page-title">Projects</h1>
-        <a class="btn btn-primary" href="/pages/project-form.php">
+        <a class="btn btn-primary" href="project-form.php">
             <i class="fas fa-plus"></i>
             <span>Add Project</span>
         </a>
@@ -84,7 +84,7 @@ require_once __DIR__ . '/../includes/header.php';
                         <td>${demoLink}</td>
                         <td>
                             <div class="table-actions">
-                                <a class="btn btn-sm btn-secondary" href="/pages/project-form.php?id=${Number(project.id)}">Edit</a>
+                                <a class="btn btn-sm btn-secondary" href="project-form.php?id=${Number(project.id)}">Edit</a>
                                 <button class="btn btn-sm btn-danger js-delete" type="button" data-id="${Number(project.id)}">Delete</button>
                             </div>
                         </td>
@@ -154,4 +154,4 @@ require_once __DIR__ . '/../includes/header.php';
 })();
 </script>
 
-<?php require_once __DIR__ . '/../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

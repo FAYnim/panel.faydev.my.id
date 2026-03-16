@@ -5,13 +5,13 @@ $isEdit = $socialId > 0;
 $pageTitle = $isEdit ? 'Edit Social Link' : 'Add Social Link';
 $activePage = 'social';
 
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="page-section">
     <div class="page-header page-header-between">
         <h1 class="page-title"><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></h1>
-        <a class="btn btn-secondary" href="/pages/social.php">Back to Social Links</a>
+        <a class="btn btn-secondary" href="social.php">Back to Social Links</a>
     </div>
 
     <div class="panel form-panel">
@@ -118,7 +118,7 @@ require_once __DIR__ . '/../includes/header.php';
             }
 
             window.setTimeout(() => {
-                window.location.href = '/pages/social.php';
+                window.location.href = 'social.php';
             }, 500);
         } catch (error) {
             if (typeof window.showToast === 'function') {
@@ -133,4 +133,4 @@ require_once __DIR__ . '/../includes/header.php';
 })();
 </script>
 
-<?php require_once __DIR__ . '/../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

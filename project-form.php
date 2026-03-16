@@ -5,13 +5,13 @@ $isEdit = $projectId > 0;
 $pageTitle = $isEdit ? 'Edit Project' : 'Add Project';
 $activePage = 'projects';
 
-require_once __DIR__ . '/../includes/header.php';
+require_once __DIR__ . '/includes/header.php';
 ?>
 
 <section class="page-section">
     <div class="page-header page-header-between">
         <h1 class="page-title"><?= htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8') ?></h1>
-        <a class="btn btn-secondary" href="/pages/projects.php">Back to Projects</a>
+        <a class="btn btn-secondary" href="projects.php">Back to Projects</a>
     </div>
 
     <div class="panel form-panel">
@@ -177,7 +177,7 @@ require_once __DIR__ . '/../includes/header.php';
             }
 
             window.setTimeout(() => {
-                window.location.href = '/pages/projects.php';
+                window.location.href = 'projects.php';
             }, 500);
         } catch (error) {
             if (typeof window.showToast === 'function') {
@@ -192,4 +192,4 @@ require_once __DIR__ . '/../includes/header.php';
 })();
 </script>
 
-<?php require_once __DIR__ . '/../includes/footer.php'; ?>
+<?php require_once __DIR__ . '/includes/footer.php'; ?>

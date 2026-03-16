@@ -30,11 +30,11 @@ require_once __DIR__ . '/includes/header.php';
     <section class="panel quick-actions-panel">
         <h2 class="panel-title">Quick Actions</h2>
         <div class="quick-actions-grid">
-            <a class="btn btn-primary" href="/pages/project-form.php">
+            <a class="btn btn-primary" href="project-form.php">
                 <i class="fas fa-plus"></i>
                 <span>Add Project</span>
             </a>
-            <a class="btn btn-secondary" href="/pages/social.php">
+            <a class="btn btn-secondary" href="social.php">
                 <i class="fas fa-share-alt"></i>
                 <span>Manage Social Links</span>
             </a>

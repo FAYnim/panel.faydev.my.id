@@ -255,10 +255,10 @@
         const confirmed = await showConfirm('Logout', 'Are you sure you want to logout?', 'Logout', 'danger');
         if (!confirmed) return;
 
-        const result = await api('/api/auth.php?action=logout', { method: 'POST' });
+        const result = await api('api/auth.php?action=logout', { method: 'POST' });
 
         if (result.success) {
-            window.location.href = '/login.php';
+            window.location.href = 'login.php';
         } else {
             showToast('Logout failed', 'error');
         }

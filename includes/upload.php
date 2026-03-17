@@ -90,7 +90,6 @@ function handleImageUpload(array $file, int $maxWidth = 1200, int $maxHeight = 7
 
     $destination = imagecreatetruecolor($newWidth, $newHeight);
     if ($destination === false) {
-        imagedestroy($source);
         return ['success' => false, 'message' => 'Failed to resize image'];
     }
 
@@ -115,8 +114,6 @@ function handleImageUpload(array $file, int $maxWidth = 1200, int $maxHeight = 7
     );
 
     if (!$resampled) {
-        imagedestroy($destination);
-        imagedestroy($source);
         return ['success' => false, 'message' => 'Failed to resize image'];
     }
 
@@ -128,9 +125,6 @@ function handleImageUpload(array $file, int $maxWidth = 1200, int $maxHeight = 7
     } elseif ($mimeType === 'image/webp') {
         $saved = imagewebp($destination, $targetPath, 85);
     }
-
-    imagedestroy($destination);
-    imagedestroy($source);
 
     if (!$saved) {
         return ['success' => false, 'message' => 'Failed to save resized image'];

@@ -69,7 +69,7 @@
         formData.append('csrf_token', csrfToken);
 
         try {
-            const response = await fetch('/api/projects.php?action=delete', {
+            const response = await fetch('api/projects.php?action=delete', {
                 method: 'POST',
                 headers: { 'X-CSRF-Token': csrfToken },
                 body: formData,

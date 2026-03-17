@@ -64,7 +64,7 @@
         }
 
         try {
-            const response = await fetch(`/api/projects.php?id=${projectId}`, {
+            const response = await fetch(`api/projects.php?id=${projectId}`, {
                 headers: { Accept: 'application/json' }
             });
             const result = await response.json();
@@ -105,7 +105,7 @@
         saveBtn.disabled = true;
 
         try {
-            const response = await fetch(`/api/projects.php?action=${action}`, {
+            const response = await fetch(`api/projects.php?action=${action}`, {
                 method: 'POST',
                 headers: { 'X-CSRF-Token': csrfToken },
                 body: formData,

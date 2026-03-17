@@ -2,119 +2,156 @@
 
 # Faydev Dashboard
 
-**CMS admin panel for [faydev.my.id](https://faydev.my.id)**
+Admin panel for managing content on [faydev.my.id](https://faydev.my.id).
 
 [![PHP](https://img.shields.io/badge/PHP-7.4%2B-777bb4?style=flat-square&logo=php&logoColor=white)](https://www.php.net/)
 [![MySQL](https://img.shields.io/badge/MySQL-5.7%2B-4479a1?style=flat-square&logo=mysql&logoColor=white)](https://www.mysql.com/)
-[![No Dependencies](https://img.shields.io/badge/Dependencies-None-brightgreen?style=flat-square)]()
+[![Apache](https://img.shields.io/badge/Apache-.htaccess-important?style=flat-square)]()
 
-[Overview](#overview) · [Features](#features) · [Project Structure](#project-structure) · [Getting Started](#getting-started) · [API Reference](#api-reference) · [Security](#security) · [Roadmap](#roadmap)
+[Overview](#overview) · [Features](#features) · [Tech Stack](#tech-stack) · [Project Structure](#project-structure) · [Getting Started](#getting-started) · [API Reference](#api-reference) · [Security](#security) · [Known Notes](#known-notes) · [Roadmap](#roadmap)
 
 </div>
 
----
-
 ## Overview
 
-A standalone admin dashboard at `panel.faydev.my.id` for managing the content displayed on the [faydev.my.id](https://faydev.my.id) landing page. Both apps share the same MySQL database — the dashboard writes, the landing page reads.
+Faydev Dashboard is a standalone CMS admin panel running at `panel.faydev.my.id`.
+It writes content to the same MySQL database used by the public landing page, including:
 
-Built with vanilla PHP + JavaScript. No Composer, no npm, no build tools.
+- Portfolio projects (`projects`)
+- Social media links (`social_links`)
+
+The project is intentionally simple: vanilla PHP + vanilla JavaScript, no Composer, no npm, no build pipeline.
 
 ## Features
 
-**Phase 1 (current):**
+### Implemented
 
-- Session-based authentication with bcrypt passwords and CSRF protection
-- Projects CRUD — add, edit, delete portfolio projects with image upload and drag-drop reordering
-- Social Links CRUD — manage social media links with Font Awesome icon picker and display ordering
-- Dashboard home with KPI cards (project count, social link count, last-updated timestamps)
-- Dark / light theme toggle
-- Responsive sidebar layout (collapsible on desktop, overlay on mobile)
+- Admin login/logout with session auth (`admins` table)
+- CSRF protection on all POST mutations
+- Session timeout (2 hours inactivity)
+- Dashboard KPIs (project count and social link count)
+- Projects CRUD:
+    - create/edit/delete
+    - thumbnail upload (JPG/PNG/WEBP, max 5MB)
+    - optional server-side resize via GD
+- Social links CRUD:
+    - create/edit/delete
+    - ordering controls (up/down) persisted via API
+- Responsive layout:
+    - collapsible sidebar on desktop
+    - slide-in sidebar overlay on mobile
+- Theme switch (dark/light) persisted in local storage
+
+### Planned
+
+- Content section management (hero/about/skills/services/contact/footer)
+- SEO management and additional dashboard modules
+- More advanced admin tooling (bulk ops, activity history, etc.)
+
+## Tech Stack
+
+- Backend: PHP 7.4+ (PDO)
+- Database: MySQL 5.7+
+- Frontend: Vanilla JavaScript + CSS
+- Web server: Apache (`.htaccess` rules)
+- Assets: Font Awesome + Google Fonts (CDN)
 
 ## Project Structure
 
-```
+```text
 panel.faydev.my.id/
-├── index.php                    # Dashboard home
-├── login.php                    # Authentication page
-├── database-dashboard.sql       # Migration script (admins, site_settings, display_order)
-├── .htaccess                    # Security headers, directory protection
-│
-├── api/
-│   ├── auth.php                 # POST login / logout
-│   ├── dashboard.php            # GET stats (counts, timestamps)
-│   ├── projects.php             # CRUD for projects
-│   └── social.php               # CRUD for social links
-│
-├── includes/
-│   ├── db.php                   # PDO connection singleton
-│   ├── auth.php                 # Session management (2h timeout)
-│   ├── csrf.php                 # CSRF token generation / validation
-│   ├── upload.php               # Image upload + GD resize
-│   ├── header.php               # Shared layout header + sidebar
-│   └── footer.php               # Shared layout footer + scripts
-│
-├── pages/
-│   ├── projects.php             # Project list with data table
-│   ├── project-form.php         # Add / edit project form
-│   ├── social.php               # Social links list
-│   └── social-form.php          # Add / edit social link form
-│
-└── src/
-    ├── css/dashboard.css        # Design system (tokens, themes, components)
-    ├── js/dashboard.js          # Client-side logic (API wrapper, toasts, modals)
-    └── images/uploads/          # Uploaded project thumbnails
+|-- index.php
+|-- login.php
+|-- projects.php
+|-- project-form.php
+|-- social.php
+|-- social-form.php
+|-- database-dashboard.sql
+|-- .htaccess
+|
+|-- api/
+|   |-- auth.php
+|   |-- dashboard.php
+|   |-- projects.php
+|   `-- social.php
+|
+|-- includes/
+|   |-- auth.php
+|   |-- csrf.php
+|   |-- db.php
+|   |-- upload.php
+|   |-- header.php
+|   `-- footer.php
+|
+|-- src/
+|   |-- css/dashboard.css
+|   `-- js/
+|       |-- dashboard.js
+|       |-- index.js
+|       |-- login.js
+|       |-- projects.js
+|       |-- project-form.js
+|       |-- social.js
+|       `-- social-form.js
+|
+`-- assets/images/uploads/
 ```
 
 ## Getting Started
 
 ### Prerequisites
 
-- PHP 7.4+ with `pdo_mysql` and `gd` extensions
+- PHP 7.4+ with extensions:
+    - `pdo_mysql`
+    - `fileinfo`
+    - `gd` (recommended for resize, optional fallback supported)
 - MySQL 5.7+
-- Apache with `mod_rewrite` (or XAMPP)
+- Apache with `mod_rewrite` and `mod_headers`
 
-### 1. Database setup
+### 1. Import migration
 
-The dashboard shares the `fayd7716_project` database with the landing page. Run the migration to add dashboard-specific tables:
+Run migration into your existing database:
 
 ```bash
 mysql -u root -p fayd7716_project < database-dashboard.sql
 ```
 
-Or import `database-dashboard.sql` via phpMyAdmin.
+This migration will:
 
-This creates the `admins` and `site_settings` tables, adds `display_order` to `projects` and `social_links`, and seeds a default admin user.
+- create `admins`
+- create `site_settings`
+- add `display_order` to `projects` and `social_links` (idempotent)
+- seed default admin account
 
 ### 2. Configure database connection
 
-Edit `includes/db.php` with your credentials:
+Edit `includes/db.php`:
 
 ```php
 define('DB_HOST', 'localhost');
-define('DB_USER', 'your_user');
-define('DB_PASS', 'your_password');
+define('DB_USER', 'root');
+define('DB_PASS', '');
 define('DB_NAME', 'fayd7716_project');
 ```
 
 > [!WARNING]
-> Do not commit production credentials. Use environment variables or a server-level config on deployed environments.
+> Do not store production secrets directly in versioned source files.
 
-### 3. Start the server
+### 3. Run with Apache/XAMPP
 
-Place the project in your Apache webroot and visit:
+Put the project in your web root, then open:
 
-```
+```text
 http://localhost/panel.faydev.my.id/login.php
 ```
 
-### 4. Log in
+### 4. Login (first run)
 
-Default credentials:
+Default seeded credentials:
 
-| Field    | Value      |
-|----------|------------|
-| Username | `admin`    |
+| Field | Value |
+|---|---|
+| Username | `admin` |
 | Password | `admin123` |
 
 > [!WARNING]
@@ -122,52 +159,67 @@ Default credentials:
 
 ## API Reference
 
-All endpoints require an active admin session. Unauthorized requests return `401`.
+All endpoints require an authenticated admin session, except `POST /api/auth.php?action=login`.
 
-Mutation endpoints (POST) require a CSRF token via the `X-CSRF-Token` header or `csrf_token` POST field.
+All mutation endpoints require CSRF token via one of:
 
-### Response format
+- `X-CSRF-Token` request header
+- `csrf_token` form/json field
+
+### Standard response format
 
 ```json
-{ "success": true, "data": { ... } }
-{ "success": false, "message": "Error description" }
+{ "success": true, "data": { "...": "..." } }
+{ "success": false, "message": "Error message" }
 ```
 
 ### Endpoints
 
-| Method | Endpoint | Action | Description |
-|--------|----------|--------|-------------|
-| POST | `/api/auth.php` | `login` | Authenticate with username + password |
-| POST | `/api/auth.php` | `logout` | Destroy session |
-| GET | `/api/dashboard.php` | — | Project/social counts and last-updated timestamps |
-| GET | `/api/projects.php` | — | List all projects |
-| POST | `/api/projects.php?action=create` | `create` | Create project (multipart form) |
-| POST | `/api/projects.php?action=update` | `update` | Update project by ID |
-| POST | `/api/projects.php?action=delete` | `delete` | Delete project(s) by ID |
-| GET | `/api/social.php` | — | List all social links |
-| POST | `/api/social.php?action=create` | `create` | Create social link |
-| POST | `/api/social.php?action=update` | `update` | Update social link by ID |
-| POST | `/api/social.php?action=delete` | `delete` | Delete social link(s) |
-| POST | `/api/social.php?action=reorder` | `reorder` | Batch update display order |
+| Method | Endpoint | Purpose |
+|---|---|---|
+| POST | `/api/auth.php?action=login` | Login admin |
+| POST | `/api/auth.php?action=logout` | Logout admin |
+| GET | `/api/dashboard.php` | Dashboard metrics |
+| GET | `/api/projects.php` | List all projects |
+| GET | `/api/projects.php?id={id}` | Get single project |
+| POST | `/api/projects.php?action=create` | Create project |
+| POST | `/api/projects.php?action=update` | Update project |
+| POST | `/api/projects.php?action=delete` | Delete one/many projects |
+| GET | `/api/social.php` | List all social links |
+| GET | `/api/social.php?id={id}` | Get single social link |
+| POST | `/api/social.php?action=create` | Create social link |
+| POST | `/api/social.php?action=update` | Update social link |
+| POST | `/api/social.php?action=delete` | Delete one/many social links |
+| POST | `/api/social.php?action=reorder` | Persist social links display order |
 
 ## Security
 
-- Passwords hashed with `password_hash()` (bcrypt)
-- Session timeout after 2 hours of inactivity
-- CSRF tokens on all state-changing requests
-- `.htaccess` blocks direct access to `includes/`, `docs/`, `.sql`, and `.md` files
-- Security headers: `X-Content-Type-Options`, `X-Frame-Options`, `X-XSS-Protection`, `Referrer-Policy`
-- API endpoints are session-only (no `Access-Control-Allow-Origin: *`)
-- All user input escaped with `htmlspecialchars()` in templates
-- Prepared statements for all database queries
+- Password hashing with `password_hash()` / `password_verify()`
+- Session fixation mitigation on login (`session_regenerate_id(true)`)
+- Session cookie hardening (`httponly`, `samesite=Lax`, conditional `secure`)
+- CSRF checks for POST requests
+- Input validation + prepared statements in API handlers
+- HTML escaping in rendered templates
+- `.htaccess` protections:
+    - deny direct access to `includes/`
+    - deny `.sql`, `.md`, `.gitignore`
+    - disable directory listing
+    - set baseline security headers
+
+## Known Notes
+
+> [!NOTE]
+> Upload storage is currently under `assets/images/uploads/`.
+>
+> If your public site expects another path convention, align both apps before deployment.
+
+> [!NOTE]
+> There is no automated test suite in this repository yet.
 
 ## Roadmap
 
 | Phase | Scope | Status |
-|-------|-------|--------|
-| 1 — MVP | Auth, Projects CRUD, Social Links CRUD, Dashboard Home | In progress |
-| 2 — Content Sections | Hero, About, Skills, Services, Contact, Footer, SEO management | Planned |
-| 3 — Advanced | Bulk operations, activity log, image optimization, analytics widget | Planned |
-
-> [!NOTE]
-> See [`PRD-DASHBOARD.md`](PRD-DASHBOARD.md) for the full product requirements document.
+|---|---|---|
+| 1 | Auth, dashboard KPI, projects CRUD, social CRUD | In progress |
+| 2 | Content section CMS + SEO fields | Planned |
+| 3 | Advanced admin tools and quality-of-life improvements | Planned |

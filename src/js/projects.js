@@ -30,7 +30,7 @@
             }
 
             tableBody.innerHTML = result.data.map((project) => {
-                const thumbnail = project.thumbnail ? `/${String(project.thumbnail).replace(/^\/+/, '')}` : '';
+                const thumbnail = project.thumbnail ? `${String(project.thumbnail)}` : '';
                 const demoLink = project.demo_link ? `<a href="${escapeHtml(project.demo_link)}" target="_blank" rel="noopener">Open</a>` : '<span class="text-muted">-</span>';
 
                 return `

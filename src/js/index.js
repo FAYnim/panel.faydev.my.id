@@ -1,7 +1,7 @@
 (() => {
     async function loadDashboardMetrics() {
         try {
-            const response = await fetch('/api/dashboard.php', {
+            const response = await fetch('api/dashboard.php', {
                 headers: {
                     'Accept': 'application/json'
                 }

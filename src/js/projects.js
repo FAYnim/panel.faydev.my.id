@@ -14,7 +14,7 @@
         emptyState.hidden = true;
 
         try {
-            const response = await fetch('/api/projects.php', {
+            const response = await fetch('api/projects.php', {
                 headers: { Accept: 'application/json' }
             });
             const result = await response.json();

@@ -48,7 +48,7 @@
         emptyState.hidden = true;
 
         try {
-            const response = await fetch('/api/social.php', {
+            const response = await fetch('api/social.php', {
                 headers: { Accept: 'application/json' }
             });
             const result = await response.json();
@@ -74,7 +74,7 @@
         }));
 
         try {
-            const response = await fetch('/api/social.php?action=reorder', {
+            const response = await fetch('api/social.php?action=reorder', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -121,7 +121,7 @@
         formData.append('csrf_token', csrfToken);
 
         try {
-            const response = await fetch('/api/social.php?action=delete', {
+            const response = await fetch('api/social.php?action=delete', {
                 method: 'POST',
                 headers: { 'X-CSRF-Token': csrfToken },
                 body: formData,

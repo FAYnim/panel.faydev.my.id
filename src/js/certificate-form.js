@@ -78,7 +78,7 @@
             document.getElementById('credential_link').value = cert.credential_link || '';
 
             if (cert.thumbnail) {
-                showPreview(`/${String(cert.thumbnail).replace(/^\/+/, '')}`);
+                showPreview(String(cert.thumbnail).replace(/^\/+/, ''));
             }
         } catch (error) {
             if (typeof window.showToast === 'function') {

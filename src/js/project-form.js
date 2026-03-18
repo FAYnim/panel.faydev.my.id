@@ -79,7 +79,7 @@
             document.getElementById('demo_link').value = project.demo_link || '';
 
             if (project.thumbnail) {
-                showPreview(`/${String(project.thumbnail).replace(/^\/+/, '')}`);
+                showPreview(String(project.thumbnail).replace(/^\/+/, ''));
             }
         } catch (error) {
             if (typeof window.showToast === 'function') {

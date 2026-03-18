@@ -123,7 +123,7 @@ panel.faydev.my.id/
 Run migration into your existing database:
 
 ```bash
-mysql -u root -p fayd7716_project < database-dashboard.sql
+mysql -u root -p fayd7716_panel < database-dashboard.sql
 ```
 
 This migration will:
@@ -142,7 +142,7 @@ Edit `includes/db.php`:
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'fayd7716_project');
+define('DB_NAME', 'fayd7716_panel');
 ```
 
 > [!WARNING]

@@ -1,9 +1,9 @@
 -- ============================================================
 -- Faydev Dashboard — Database Migration (Phase 1 MVP)
--- Run against existing `fayd7716_project` database
+-- Run against existing `fayd7716_panel` database
 -- ============================================================
 
-USE `fayd7716_project`;
+USE `fayd7716_panel`;
 
 -- ------------------------------------------------------------
 -- 1. admins table

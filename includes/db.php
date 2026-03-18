@@ -7,7 +7,7 @@
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '');
-define('DB_NAME', 'fayd7716_project');
+define('DB_NAME', 'fayd7716_panel');
 
 function getDB(): PDO {
     static $pdo = null;

@@ -23,7 +23,7 @@
         }
 
         try {
-            const response = await fetch(`/api/social.php?id=${socialId}`, {
+            const response = await fetch(`api/social.php?id=${socialId}`, {
                 headers: { Accept: 'application/json' }
             });
             const result = await response.json();
@@ -54,7 +54,7 @@
         saveBtn.disabled = true;
 
         try {
-            const response = await fetch(`/api/social.php?action=${action}`, {
+            const response = await fetch(`api/social.php?action=${action}`, {
                 method: 'POST',
                 headers: { 'X-CSRF-Token': csrfToken },
                 body: formData,

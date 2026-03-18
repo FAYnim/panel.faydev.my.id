@@ -78,7 +78,7 @@ function requireAuth(): void
     }
 
     // Page request — redirect to login
-    header('Location: /login.php');
+    header('Location: login.php');
     exit;
 }
 

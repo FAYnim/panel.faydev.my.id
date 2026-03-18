@@ -18,17 +18,21 @@ try {
 
     $projectsCount = (int) $pdo->query('SELECT COUNT(*) FROM projects')->fetchColumn();
     $socialCount = (int) $pdo->query('SELECT COUNT(*) FROM social_links')->fetchColumn();
+    $certificatesCount = (int) $pdo->query('SELECT COUNT(*) FROM certificates')->fetchColumn();
 
     $projectsLastUpdated = $pdo->query('SELECT MAX(updated_at) FROM projects')->fetchColumn();
     $socialLastUpdated = $pdo->query('SELECT MAX(updated_at) FROM social_links')->fetchColumn();
+    $certificatesLastUpdated = $pdo->query('SELECT MAX(updated_at) FROM certificates')->fetchColumn();
 
     echo json_encode([
         'success' => true,
         'data' => [
             'projects_count' => $projectsCount,
             'social_links_count' => $socialCount,
+            'certificates_count' => $certificatesCount,
             'projects_last_updated' => $projectsLastUpdated,
             'social_links_last_updated' => $socialLastUpdated,
+            'certificates_last_updated' => $certificatesLastUpdated,
         ],
     ]);
 } catch (Throwable $e) {

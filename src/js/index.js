@@ -14,6 +14,7 @@
 
             document.getElementById('projectsCount').textContent = String(result.data.projects_count ?? 0);
             document.getElementById('socialCount').textContent = String(result.data.social_links_count ?? 0);
+            document.getElementById('certificatesCount').textContent = String(result.data.certificates_count ?? 0);
         } catch (error) {
             const message = error instanceof Error ? error.message : 'Failed to load dashboard data';
             if (typeof window.showToast === 'function') {

@@ -64,6 +64,26 @@ BEGIN
         ALTER TABLE `social_links`
             ADD COLUMN `display_order` INT NOT NULL DEFAULT 0;
     END IF;
+    -- Create certificates table if it doesn't exist
+    IF NOT EXISTS (
+        SELECT 1 FROM INFORMATION_SCHEMA.TABLES
+        WHERE TABLE_SCHEMA = DATABASE()
+          AND TABLE_NAME   = 'certificates'
+    ) THEN
+        CREATE TABLE `certificates` (
+            `id`               INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+            `title`            VARCHAR(150)    NOT NULL,
+            `issuer`           VARCHAR(150)    NOT NULL,
+            `thumbnail`        VARCHAR(255)    NULL,
+            `credential_link`  VARCHAR(500)    NULL,
+            `issue_date`       DATE            NOT NULL,
+            `display_order`    INT             NOT NULL DEFAULT 0,
+            `created_at`       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            `updated_at`       TIMESTAMP       NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`),
+            KEY `idx_certificates_display_order` (`display_order`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    END IF;
 END//
 
 DELIMITER ;

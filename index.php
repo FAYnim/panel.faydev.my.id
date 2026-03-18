@@ -25,6 +25,14 @@ require_once __DIR__ . '/includes/header.php';
                 <p class="kpi-value" id="socialCount">0</p>
             </div>
         </article>
+
+        <article class="kpi-card">
+            <div class="kpi-icon"><i class="fas fa-certificate" aria-hidden="true"></i></div>
+            <div class="kpi-content">
+                <p class="kpi-label">Total Certificates</p>
+                <p class="kpi-value" id="certificatesCount">0</p>
+            </div>
+        </article>
     </div>
 
     <section class="panel quick-actions-panel">
@@ -37,6 +45,10 @@ require_once __DIR__ . '/includes/header.php';
             <a class="btn btn-secondary" href="social.php">
                 <i class="fas fa-share-alt"></i>
                 <span>Manage Social Links</span>
+            </a>
+            <a class="btn btn-secondary" href="certificate-form.php">
+                <i class="fas fa-certificate"></i>
+                <span>Add Certificate</span>
             </a>
         </div>
     </section>

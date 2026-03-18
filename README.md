@@ -19,6 +19,7 @@ It writes content to the same MySQL database used by the public landing page, in
 
 - Portfolio projects (`projects`)
 - Social media links (`social_links`)
+- Professional certificates (`certificates`)
 
 The project is intentionally simple: vanilla PHP + vanilla JavaScript, no Composer, no npm, no build pipeline.
 
@@ -29,7 +30,7 @@ The project is intentionally simple: vanilla PHP + vanilla JavaScript, no Compos
 - Admin login/logout with session auth (`admins` table)
 - CSRF protection on all POST mutations
 - Session timeout (2 hours inactivity)
-- Dashboard KPIs (project count and social link count)
+- Dashboard KPIs (project count, social link count, and certificate count)
 - Projects CRUD:
     - create/edit/delete
     - thumbnail upload (JPG/PNG/WEBP, max 5MB)
@@ -37,6 +38,10 @@ The project is intentionally simple: vanilla PHP + vanilla JavaScript, no Compos
 - Social links CRUD:
     - create/edit/delete
     - ordering controls (up/down) persisted via API
+- Certificates CRUD:
+    - create/edit/delete
+    - thumbnail upload (JPG/PNG/WEBP, max 5MB)
+    - optional credential link with URL validation
 - Responsive layout:
     - collapsible sidebar on desktop
     - slide-in sidebar overlay on mobile
@@ -66,6 +71,8 @@ panel.faydev.my.id/
 |-- project-form.php
 |-- social.php
 |-- social-form.php
+|-- certificates.php
+|-- certificate-form.php
 |-- database-dashboard.sql
 |-- .htaccess
 |
@@ -73,7 +80,8 @@ panel.faydev.my.id/
 |   |-- auth.php
 |   |-- dashboard.php
 |   |-- projects.php
-|   `-- social.php
+|   |-- social.php
+|   `-- certificates.php
 |
 |-- includes/
 |   |-- auth.php
@@ -92,7 +100,9 @@ panel.faydev.my.id/
 |       |-- projects.js
 |       |-- project-form.js
 |       |-- social.js
-|       `-- social-form.js
+|       |-- social-form.js
+|       |-- certificates.js
+|       `-- certificate-form.js
 |
 `-- assets/images/uploads/
 ```
@@ -121,6 +131,7 @@ This migration will:
 - create `admins`
 - create `site_settings`
 - add `display_order` to `projects` and `social_links` (idempotent)
+- create `certificates` table (idempotent)
 - seed default admin account
 
 ### 2. Configure database connection
@@ -191,6 +202,11 @@ All mutation endpoints require CSRF token via one of:
 | POST | `/api/social.php?action=update` | Update social link |
 | POST | `/api/social.php?action=delete` | Delete one/many social links |
 | POST | `/api/social.php?action=reorder` | Persist social links display order |
+| GET | `/api/certificates.php` | List all certificates |
+| GET | `/api/certificates.php?id={id}` | Get single certificate |
+| POST | `/api/certificates.php?action=create` | Create certificate |
+| POST | `/api/certificates.php?action=update` | Update certificate |
+| POST | `/api/certificates.php?action=delete` | Delete one/many certificates |
 
 ## Security
 

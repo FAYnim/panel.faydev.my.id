@@ -50,6 +50,9 @@ $initialTheme = in_array($cookieTheme, ['dark', 'light'], true) ? $cookieTheme :
             <a class="nav-item <?= $activePage === 'social' ? 'active' : '' ?>" href="social.php">
                 <i class="fas fa-share-alt"></i><span>Social Links</span>
             </a>
+            <a class="nav-item <?= $activePage === 'certificates' ? 'active' : '' ?>" href="certificates.php">
+                <i class="fas fa-certificate"></i><span>Certificates</span>
+            </a>
             <div class="nav-divider"></div>
             <a class="nav-item" href="#" id="logoutBtn">
                 <i class="fas fa-sign-out-alt"></i><span>Logout</span>
